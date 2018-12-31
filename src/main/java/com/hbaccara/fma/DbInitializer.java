@@ -9,8 +9,8 @@ import com.hbaccara.fma.repository.UserRepository;
 import com.hbaccara.fma.entities.User;
 
 /**
- * Database initializer that populates the database with some
- * initial user accounts using JPA.
+ * Database initializer that populates the database with some initial user
+ * accounts using JPA.
  * 
  * This component is started only when app.db-init property is set to true
  */
@@ -18,19 +18,19 @@ import com.hbaccara.fma.entities.User;
 @Component
 @ConditionalOnProperty(name = "app.db-init", havingValue = "true")
 public class DbInitializer implements CommandLineRunner {
-    
+
 	@Autowired
 	UserRepository userRepository;
 
-    @Override
-    public void run(String... strings) throws Exception {
+	@Override
+	public void run(String... strings) throws Exception {
 
-        User user1 = new User("hamdi", "hamdi");
-        User user2 = new User("ahmed", "ahmed");
+		User user1 = new User("hamdi", "hamdi");
+		User user2 = new User("ahmed", "ahmed");
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+		userRepository.save(user1);
+		userRepository.save(user2);
 
-        System.out.println("Database has been initialized");
-    }
+		System.out.println("Database has been initialized");
+	}
 }
