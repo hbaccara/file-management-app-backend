@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hbaccara.fma.dto.UserDto;
@@ -16,6 +17,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserMapper userMapper;
@@ -39,7 +43,7 @@ public class UserController {
 		User user = new User();
 
 		user.setUsername(username);
-		user.setPassword(password);
+		user.setPassword(passwordEncoder.encode(password));
 
 		userRepository.save(user);
 
@@ -50,11 +54,11 @@ public class UserController {
 
 	public UserDto login(String username, String password) {
 
-		User user = userRepository.findByUsernameAndPassword(username, password);
-
 		UserDto userDto = null;
-
-		if (user != null) {
+		
+		User user = userRepository.findByUsername(username);
+		
+		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
 
 			userDto = userMapper.userToUserDto(user);
 		}
