@@ -15,6 +15,4 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
 	@Query("SELECT n FROM Notification n WHERE user.id = :userId ORDER BY n.date DESC")
 	public List<Notification> findNotificationsByUser(Long userId, Pageable pageRequest);
 	
-	@Query("SELECT n FROM Notification n WHERE user.id = :userId ORDER BY n.date DESC")
-	public List<Notification> findNotificationsByUser(Long userId);
 }
