@@ -1,4 +1,4 @@
-package com.hbaccara.fma.controllers;
+package com.hbaccara.fma.rest.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.hbaccara.fma.mappers.NotificationMapper;
 import com.hbaccara.fma.repository.NotificationRepository;
 
 @Service
-public class NotificationController {
+public class NotificationService {
 
 	private static final int NUMBER_OF_NOTIFICATIONS_TO_LOAD = 4;
 

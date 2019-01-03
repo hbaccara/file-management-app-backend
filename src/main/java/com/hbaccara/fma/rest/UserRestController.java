@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hbaccara.fma.controllers.UserController;
 import com.hbaccara.fma.dto.UserDto;
+import com.hbaccara.fma.rest.services.UserService;
 
 @RestController
 public class UserRestController {
 
 	@Autowired
-	private UserController userController;
+	private UserService userController;
 
 	@GetMapping("/users")
 	public ResponseEntity<List<UserDto>> findByUsernameContaining(@RequestParam(value = "username") String username) {

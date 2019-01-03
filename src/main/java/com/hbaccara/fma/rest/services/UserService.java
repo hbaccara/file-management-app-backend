@@ -1,4 +1,4 @@
-package com.hbaccara.fma.controllers;
+package com.hbaccara.fma.rest.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.hbaccara.fma.mappers.UserMapper;
 import com.hbaccara.fma.repository.UserRepository;
 
 @Service
-public class UserController {
+public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;

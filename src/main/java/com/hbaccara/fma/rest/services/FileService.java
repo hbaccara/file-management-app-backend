@@ -1,4 +1,4 @@
-package com.hbaccara.fma.controllers;
+package com.hbaccara.fma.rest.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,7 +23,7 @@ import com.hbaccara.fma.repository.UserRepository;
 import com.hbaccara.fma.rest.resp.ListDirectoryResponse;
 
 @Service
-public class FileController {
+public class FileService {
 
 	@Autowired
 	private FileRepository fileRepository;

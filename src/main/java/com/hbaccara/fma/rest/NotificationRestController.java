@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hbaccara.fma.controllers.NotificationController;
 import com.hbaccara.fma.dto.NotificationDto;
+import com.hbaccara.fma.rest.services.NotificationService;
 
 @RestController
 public class NotificationRestController {
 
 	@Autowired
-	private NotificationController notificationController;
+	private NotificationService notificationController;
 
 	@GetMapping("/notification")
 	public ResponseEntity<List<NotificationDto>> getNotifications(

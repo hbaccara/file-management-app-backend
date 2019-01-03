@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hbaccara.fma.controllers.FileController;
 import com.hbaccara.fma.dto.FileDto;
 import com.hbaccara.fma.rest.resp.ListDirectoryResponse;
+import com.hbaccara.fma.rest.services.FileService;
 
 @RestController
 public class FileRestController {
 
 	@Autowired
-	private FileController fileController;
+	private FileService fileController;
 
 	@PostMapping("/upload")
 	public ResponseEntity<FileDto> handleFileUpload(@RequestParam(value = "userId") Long userId,
