@@ -43,7 +43,7 @@ public class FileService {
 		if (isRootdirectory) {
 			parentId = null;
 		} else {
-			parent = fileRepository.findById(parentId).orElseGet(null);
+			parent = fileRepository.findById(parentId).orElseGet(() -> null);
 		}
 
 		File file = new File();
@@ -125,7 +125,7 @@ public class FileService {
 		if (isRootdirectory) {
 			directoryId = null;
 		} else {
-			folder = fileRepository.findById(directoryId).orElseGet(null);
+			folder = fileRepository.findById(directoryId).orElseGet(() -> null);
 			if (folder == null) {
 				throw new Exception("Folder doesn't exist!");
 			}
