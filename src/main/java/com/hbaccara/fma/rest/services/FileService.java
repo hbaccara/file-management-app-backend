@@ -78,7 +78,7 @@ public class FileService {
 			downloadFilename = file.getName();
 		}
 
-		else { 
+		else {
 			// compress the folder
 			try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					ZipOutputStream zos = new ZipOutputStream(bos)) {
@@ -145,11 +145,11 @@ public class FileService {
 
 		if (isRootdirectory) {
 
-			files = fileRepository.findAllRootElementsByOwner(userId);
-			List<File> sharedFiles = fileRepository.findSharedElementsByUser(userId);
+			files = fileRepository.findAllRootFilesByOwner(userId);
+			List<File> sharedFiles = fileRepository.findFilesSharedWithUser(userId);
 			files.addAll(sharedFiles);
 		} else {
-			files = fileRepository.findAllElementsByFolder(directoryId);
+			files = fileRepository.findAllFilesByFolder(directoryId);
 		}
 
 		fileDtos = new ArrayList<>();
@@ -165,6 +165,40 @@ public class FileService {
 		response.setHierarchy(hierarchyDtos);
 
 		return response;
+	}
+
+	public List<FileDto> searchFiles(String searchTerm, Long userId) throws Exception {
+
+		List<FileDto> fileDtos = new ArrayList<>();
+
+		List<File> userFiles = fileRepository.findFilesByOwnerAndSearchTerm(userId, searchTerm);
+		List<File> filesSharedWithUser = fileRepository.findFilesSharedWithUserBySearchTerm(userId, searchTerm);
+		userFiles.addAll(filesSharedWithUser);
+
+		for (File file : userFiles) {
+
+			FileDto fileDto = fileMapper.fileToFileDto(file);
+
+			fileDtos.add(fileDto);
+		}
+
+		return fileDtos;
+	}
+
+	public List<FileDto> findFilesSharedWithUser(Long userId) throws Exception {
+
+		List<FileDto> fileDtos = new ArrayList<>();
+
+		List<File> filesSharedWithUser = fileRepository.findFilesSharedWithUser(userId);
+
+		for (File file : filesSharedWithUser) {
+
+			FileDto fileDto = fileMapper.fileToFileDto(file);
+
+			fileDtos.add(fileDto);
+		}
+
+		return fileDtos;
 	}
 
 	public FileDto createFolder(Long userId, Long parentId, String name) {
@@ -217,7 +251,7 @@ public class FileService {
 
 	private void compressFolder(Long folderId, String path, ZipOutputStream zos) throws IOException {
 
-		List<File> files = fileRepository.findAllElementsByFolder(folderId);
+		List<File> files = fileRepository.findAllFilesByFolder(folderId);
 
 		// first, compress the files under the current folder
 		for (File file : files.stream().filter(f -> !f.isFolder()).collect(Collectors.toList())) {

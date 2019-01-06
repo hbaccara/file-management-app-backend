@@ -1,5 +1,6 @@
 package com.hbaccara.fma.rest;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,6 +74,37 @@ public class FileRestController {
 		try {
 
 			ListDirectoryResponse response = fileController.listDirectory(directoryId, userId);
+
+			return ResponseEntity.ok().body(response);
+
+		} catch (Exception e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	@GetMapping("/files/search")
+	public ResponseEntity<List<FileDto>> searchFiles(@RequestParam(required = true, value = "searchTerm") String searchTerm,
+			@RequestParam(required = true, value = "userId") Long userId) {
+
+		try {
+
+			List<FileDto> response = fileController.searchFiles(searchTerm, userId);
+
+			return ResponseEntity.ok().body(response);
+
+		} catch (Exception e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	@GetMapping("/files/shared-with-user")
+	public ResponseEntity<List<FileDto>> getFilesSharedWithUser(@RequestParam(required = true, value = "userId") Long userId) {
+
+		try {
+
+			List<FileDto> response = fileController.findFilesSharedWithUser(userId);
 
 			return ResponseEntity.ok().body(response);
 
