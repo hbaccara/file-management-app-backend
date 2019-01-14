@@ -248,6 +248,19 @@ public class FileService {
 
 		return fileDto;
 	}
+	
+	public FileDto move(Long id, Long newParentId) {
+
+		File file = fileRepository.findById(id).get();
+		File newParent = fileRepository.findById(newParentId).orElseGet(() -> null) ;
+		file.setParent(newParent);
+		file.setUpdateDate(new Date());
+		fileRepository.save(file);
+
+		FileDto fileDto = fileMapper.fileToFileDto(file);
+
+		return fileDto;
+	}
 
 	private void compressFolder(Long folderId, String path, ZipOutputStream zos) throws IOException {
 

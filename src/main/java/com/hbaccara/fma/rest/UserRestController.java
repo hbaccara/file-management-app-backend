@@ -21,13 +21,13 @@ import com.hbaccara.fma.rest.services.UserService;
 public class UserRestController {
 
 	@Autowired
-	private UserService userController;
+	private UserService userService;
 
 	@GetMapping("/users")
 	public ResponseEntity<List<UserDto>> findByUsernameContaining(@RequestParam(value = "username") String username) {
 
 		try {
-			List<UserDto> userDtos = userController.findByUsernameContaining(username);
+			List<UserDto> userDtos = userService.findByUsernameContaining(username);
 
 			return ResponseEntity.status(HttpStatus.OK).body(userDtos);
 
@@ -42,7 +42,7 @@ public class UserRestController {
 			@RequestParam("password") String password) {
 
 		try {
-			UserDto userDto = userController.addUser(username, password);
+			UserDto userDto = userService.addUser(username, password);
 
 			return ResponseEntity.status(HttpStatus.OK).body(userDto);
 
@@ -57,7 +57,7 @@ public class UserRestController {
 			@RequestParam(value = "password") String password, HttpServletRequest request) {
 
 		try {
-			UserDto userDto = userController.login(username, password);
+			UserDto userDto = userService.login(username, password);
 					
 			return ResponseEntity.status(HttpStatus.OK).body(userDto);
 
@@ -71,7 +71,7 @@ public class UserRestController {
 	public ResponseEntity<?> logout(@RequestParam(value = "userId") Long userId) {
 
 		try {
-			userController.logout(userId);
+			userService.logout(userId);
 
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 

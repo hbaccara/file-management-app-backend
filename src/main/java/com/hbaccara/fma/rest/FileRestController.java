@@ -28,14 +28,14 @@ import com.hbaccara.fma.rest.services.FileService;
 public class FileRestController {
 
 	@Autowired
-	private FileService fileController;
+	private FileService fileService;
 
 	@PostMapping("/upload")
 	public ResponseEntity<FileDto> handleFileUpload(@RequestParam(value = "userId") Long userId,
 			@RequestParam(value = "parentId") Long parentId, @RequestParam("file") MultipartFile multipartFile) {
 
 		try {
-			FileDto fileDto = fileController.handleFileUpload(userId, parentId, multipartFile);
+			FileDto fileDto = fileService.handleFileUpload(userId, parentId, multipartFile);
 
 			return ResponseEntity.status(HttpStatus.OK).body(fileDto);
 			
@@ -50,7 +50,7 @@ public class FileRestController {
 	public ResponseEntity<Resource> download(@PathVariable Long id) {
 
 		try {
-			Object[] fileDownloadData = fileController.download(id);
+			Object[] fileDownloadData = fileService.download(id);
 
 			String downloadFilename = (String) fileDownloadData[0];
 			byte[] fileContent = (byte[]) fileDownloadData[1];
@@ -73,7 +73,7 @@ public class FileRestController {
 
 		try {
 
-			ListDirectoryResponse response = fileController.listDirectory(directoryId, userId);
+			ListDirectoryResponse response = fileService.listDirectory(directoryId, userId);
 
 			return ResponseEntity.ok().body(response);
 
@@ -89,7 +89,7 @@ public class FileRestController {
 
 		try {
 
-			List<FileDto> response = fileController.searchFiles(searchTerm, userId);
+			List<FileDto> response = fileService.searchFiles(searchTerm, userId);
 
 			return ResponseEntity.ok().body(response);
 
@@ -104,7 +104,7 @@ public class FileRestController {
 
 		try {
 
-			List<FileDto> response = fileController.findFilesSharedWithUser(userId);
+			List<FileDto> response = fileService.findFilesSharedWithUser(userId);
 
 			return ResponseEntity.ok().body(response);
 
@@ -121,7 +121,7 @@ public class FileRestController {
 
 		try {
 
-			FileDto fileDto = fileController.createFolder(userId, parentId, name);
+			FileDto fileDto = fileService.createFolder(userId, parentId, name);
 
 			return ResponseEntity.status(HttpStatus.OK).body(fileDto);
 
@@ -136,7 +136,7 @@ public class FileRestController {
 	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
 
 		try {
-			fileController.delete(id);
+			fileService.delete(id);
 
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 			
@@ -146,12 +146,27 @@ public class FileRestController {
 		}
 	}
 
-	@PutMapping("/directory")
+	@PutMapping("/file/rename")
 	public ResponseEntity<FileDto> rename(@RequestParam(value = "id") Long id,
 			@RequestParam(value = "newName") String newName) {
 
 		try {
-			FileDto fileDto = fileController.rename(id, newName);
+			FileDto fileDto = fileService.rename(id, newName);
+
+			return ResponseEntity.status(HttpStatus.OK).body(fileDto);
+			
+		} catch (Exception e) {
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	@PutMapping("/file/move")
+	public ResponseEntity<FileDto> move(@RequestParam(value = "id") Long id,
+			@RequestParam(value = "newParentId") Long newParentId) {
+
+		try {
+			FileDto fileDto = fileService.move(id, newParentId);
 
 			return ResponseEntity.status(HttpStatus.OK).body(fileDto);
 			

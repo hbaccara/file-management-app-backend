@@ -19,14 +19,14 @@ import com.hbaccara.fma.rest.services.NotificationService;
 public class NotificationRestController {
 
 	@Autowired
-	private NotificationService notificationController;
+	private NotificationService notificationService;
 
 	@GetMapping("/notification")
 	public ResponseEntity<List<NotificationDto>> getNotifications(
 			@RequestParam(required = true, value = "userId") Long userId){
 
 		try {
-			List<NotificationDto> notificationDtos = notificationController.getNotifications(userId);
+			List<NotificationDto> notificationDtos = notificationService.getNotifications(userId);
 
 			return ResponseEntity.status(HttpStatus.OK).body(notificationDtos);
 
@@ -40,7 +40,7 @@ public class NotificationRestController {
 	public ResponseEntity<NotificationDto> markAsRead(@RequestParam(value = "id") Long id) {
 
 		try {
-			NotificationDto notificationDto = notificationController.markAsRead(id);
+			NotificationDto notificationDto = notificationService.markAsRead(id);
 
 			return ResponseEntity.status(HttpStatus.OK).body(notificationDto);
 
