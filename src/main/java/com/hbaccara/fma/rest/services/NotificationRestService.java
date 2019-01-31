@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.hbaccara.fma.dto.NotificationDto;
 import com.hbaccara.fma.entities.Notification;
+import com.hbaccara.fma.entities.User;
 import com.hbaccara.fma.mappers.NotificationMapper;
 import com.hbaccara.fma.repository.NotificationRepository;
 
 @Service
-public class NotificationService {
+public class NotificationRestService {
 
 	private static final int NUMBER_OF_NOTIFICATIONS_TO_LOAD = 4;
 
@@ -23,11 +24,11 @@ public class NotificationService {
 	@Autowired
 	private NotificationMapper notificationMapper;
 
-	public List<NotificationDto> getNotifications(Long userId){
+	public List<NotificationDto> getNotifications(User user) {
 
 		List<NotificationDto> notificationDtos = new ArrayList<>();
 
-		List<Notification> notifications = notificationRepository.findNotificationsByUser(userId,
+		List<Notification> notifications = notificationRepository.findNotificationsByUser(user.getId(),
 				PageRequest.of(0, NUMBER_OF_NOTIFICATIONS_TO_LOAD));
 
 		for (Notification notification : notifications) {
@@ -36,7 +37,7 @@ public class NotificationService {
 
 			notificationDtos.add(notificationDto);
 		}
-		
+
 		return notificationDtos;
 	}
 

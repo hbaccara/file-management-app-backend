@@ -14,6 +14,7 @@ public class UserMapper {
 		
 		userDto.setId(user.getId());
 		userDto.setUsername(user.getUsername());
+		userDto.setToken(user.getToken());
 		
 		return userDto;
 	}

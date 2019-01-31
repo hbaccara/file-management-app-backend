@@ -1,4 +1,4 @@
-package com.hbaccara.fma;
+package com.hbaccara.fma.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

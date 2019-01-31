@@ -19,24 +19,18 @@ import com.hbaccara.fma.entities.File;
 import com.hbaccara.fma.entities.User;
 import com.hbaccara.fma.mappers.FileMapper;
 import com.hbaccara.fma.repository.FileRepository;
-import com.hbaccara.fma.repository.UserRepository;
-import com.hbaccara.fma.rest.resp.ListDirectoryResponse;
+import com.hbaccara.fma.rest.response.ListDirectoryResponse;
 
 @Service
-public class FileService {
+public class FileRestService {
 
 	@Autowired
 	private FileRepository fileRepository;
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
 	private FileMapper fileMapper;
 
-	public FileDto handleFileUpload(Long userId, Long parentId, MultipartFile multipartFile) throws IOException {
-
-		User user = userRepository.findById(userId).get();
+	public FileDto handleFileUpload(User user, Long parentId, MultipartFile multipartFile) throws IOException {
 
 		boolean isRootdirectory = parentId == -1;
 		File parent = null;
@@ -113,7 +107,9 @@ public class FileService {
 		return result;
 	}
 
-	public ListDirectoryResponse listDirectory(Long directoryId, Long userId) throws Exception {
+	public ListDirectoryResponse listDirectory(Long directoryId, User user) throws Exception {
+
+		Long userId = user.getId();
 
 		ListDirectoryResponse response = new ListDirectoryResponse();
 
@@ -167,7 +163,9 @@ public class FileService {
 		return response;
 	}
 
-	public List<FileDto> searchFiles(String searchTerm, Long userId) throws Exception {
+	public List<FileDto> searchFiles(String searchTerm, User user) throws Exception {
+
+		Long userId = user.getId();
 
 		List<FileDto> fileDtos = new ArrayList<>();
 
@@ -185,11 +183,11 @@ public class FileService {
 		return fileDtos;
 	}
 
-	public List<FileDto> findFilesSharedWithUser(Long userId) throws Exception {
+	public List<FileDto> findFilesSharedWithUser(User user) throws Exception {
 
 		List<FileDto> fileDtos = new ArrayList<>();
 
-		List<File> filesSharedWithUser = fileRepository.findFilesSharedWithUser(userId);
+		List<File> filesSharedWithUser = fileRepository.findFilesSharedWithUser(user.getId());
 
 		for (File file : filesSharedWithUser) {
 
@@ -201,9 +199,7 @@ public class FileService {
 		return fileDtos;
 	}
 
-	public FileDto createFolder(Long userId, Long parentId, String name) {
-
-		User user = userRepository.findById(userId).get();
+	public FileDto createFolder(User user, Long parentId, String name) {
 
 		boolean isRootdirectory = parentId == -1;
 		File parent = null;
@@ -248,11 +244,11 @@ public class FileService {
 
 		return fileDto;
 	}
-	
+
 	public FileDto move(Long id, Long newParentId) {
 
 		File file = fileRepository.findById(id).get();
-		File newParent = fileRepository.findById(newParentId).orElseGet(() -> null) ;
+		File newParent = fileRepository.findById(newParentId).orElseGet(() -> null);
 		file.setParent(newParent);
 		file.setUpdateDate(new Date());
 		fileRepository.save(file);

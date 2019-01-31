@@ -5,6 +5,8 @@ public class UserDto {
 	private Long id;
 
 	private String username;
+	
+	private String token;
 
 	public Long getId() {
 		return id;
@@ -20,6 +22,14 @@ public class UserDto {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

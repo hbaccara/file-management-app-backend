@@ -1,4 +1,4 @@
-package com.hbaccara.fma.rest.resp;
+package com.hbaccara.fma.rest.response;
 
 import java.util.List;
 

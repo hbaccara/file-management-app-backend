@@ -13,11 +13,11 @@ import com.hbaccara.fma.mappers.UserMapper;
 import com.hbaccara.fma.repository.UserRepository;
 
 @Service
-public class UserService {
+public class UserRestService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -52,22 +52,4 @@ public class UserService {
 		return userDto;
 	}
 
-	public UserDto login(String username, String password) {
-
-		UserDto userDto = null;
-		
-		User user = userRepository.findByUsername(username);
-		
-		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-
-			userDto = userMapper.userToUserDto(user);
-		}
-
-		return userDto;
-	}
-
-	public void logout(Long userId) {
-
-		// TODO write logout logic
-	}
 }
